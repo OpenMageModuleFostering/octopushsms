@@ -7,7 +7,7 @@
         including namespace -->
         <Octopush_OctopushSms>
             <!-- Current version of module -->
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </Octopush_OctopushSms>
     </modules>
     <global>

@@ -8,7 +8,7 @@
             <!-- flag indicating weather module is active or not -->
             <active>true</active>
             <!-- code pool -->
-            <codePool>local</codePool>
+            <codePool>community</codePool>
         </Octopush_OctopushSms>
     </modules>
 </config>
