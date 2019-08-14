@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/OctopushSms",
+    "type": "magento-module",
+    "license": "GPL-3.0",
+    "homepage": "",
+    "description": "Octopush provides innovative communication SMS APIs that enable applications and enterprises to easily connect to their customers and a WEB-BASED solution that allows business owners and marketers to run their own sms marketing campaigns in 190 countries.",
+    "authors": [
+    {
+        "name": "Carl",
+        "email": "jeancarl@octopush.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

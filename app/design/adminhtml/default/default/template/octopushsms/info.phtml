@@ -1,0 +1,55 @@
+<?php
+//$Helper_api = Mage::helper('octopushsms/API');
+//$Helper_campaign = Mage::helper('octopushsms/Campaign');
+//$api_balance = $Helper_api->get_balance();
+//$balance = $api_balance !== '001' ? $api_balance : 0;
+//get the campaign
+//$campaignModel=Mage::registry('campaign_data');
+
+//echo $this->getLayout()->createBlock('octopushsms/campaign_edit_info')->setTemplate('octopushsms/campaign.phtml')->toHtml();
+
+echo '
+<fieldset id="block_infos">
+    <h2><span class="dashicons dashicons-info vmiddle"></span>' . __('Information') . '</h2>
+    <label>' . __('Amount in your account') . '</label>
+    <div id="balance">' . number_format((float) $this->balance, 0, '', ' ') . ' SMS</div>
+    <div class="clear"></div>
+    <label>' . __('Campaign ID') . '</label>
+    <div id="id_campaign">' . $this->campaignModel->getId() . '</div>
+    <div class="clear"></div>
+    <label>' . __('Ticket') . '</label>
+    <div id="ticket">' . $this->campaignModel->ticket . '</div>
+    <div class="clear"></div>
+    <label>' . __('Status') . '</label>
+    <div id="status">' . $this->Helper_campaign->get_status($this->campaignModel->getStatus()) . '</div>
+    <div class="clear"></div>' .
+    ($this->campaignModel->status == 5 ? '
+    <label>' . __('Error') . '</label>
+    <div id="error_code">' . $this->Helper_api->get_error_SMS($this->campaignModel->getErrorCode()) . '</div>
+    <div class="clear"></div>' : '') .
+    (get_class($this->campaignModel) == 'Octopush_Sms_History_Tab' && $this->campaignModel->getSimulation() ? '
+    <label>' . __('Simulation') . '</label>
+    <div id="simulation">' . __('Yes') . '</div>' : '') .
+    (get_class($this->campaignModel) == 'Octopush_Sms_History_Tab' && $this->campaignModel->getPaidByCustomer() ? '
+    <label>' . __('Paid by customer') . '</label>
+    <div id="paid_by_customer">' . __('Yes') . '</div>' : '') . '
+    <div class="clear"></div>
+    <label>' . __('Recipients') . '</label>
+    <div id="nb_recipients">' . $this->campaignModel->getNbRecipients() . '</div>
+    <div class="clear"></div>
+    <!--<label>' . __('Nb of SMS') . '</label>
+    <div id="nb_sms">' . $this->campaignModel->getNbSms() . '</div>
+    <div class="clear"></div>-->
+    <label>' . __('Price') . '</label>
+    <div id="price">' . number_format($this->campaignModel->getPrice(), 3, '.', '') . ' €</div>
+    <div class="clear"></div>
+    <label>' . __('Send date') . '</label>
+    <div>' . ($this->campaignModel->getDateSend() != "0000-00-00 00:00:00" ? Mage::helper('core')->formatDate($this->campaignModel->getDateSend(), 'full', false) : '') . '</div>
+    <div class="clear"></div>
+    <label>' . __('Transmition date') . '</label>
+    <div>' . ($this->campaignModel->getDateTransmitted() != "" ? Mage::helper('core')->formatDate($this->campaignModel->getDateTransmitted(), 'medium', false) : '') . '</div>
+    <div class="clear"></div>
+    <label>' . __('Validation date') . '</label>
+    <div>' . ($this->campaignModel->getDateValidation() != "" ? Mage::helper('core')->formatDate($this->campaignModel->getDateValidation(), 'medium', false) : '') . '</div>
+</fieldset>';
+

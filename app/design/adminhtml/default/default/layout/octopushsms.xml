@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">
+    <routeradmin_adminhtml_index_index>
+        <reference name="content">
+            <block type="octopushsms/setting"  name="afficher_setting"
+                   template="octopushsms/afficher.phtml" />
+        </reference>
+    </routeradmin_adminhtml_index_index>
+    <routeradmin_adminhtml_index_messages>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>octopushsms/octopushsms.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="octopushsms/messages"  name="display_messages"
+                   template="octopushsms/messages.phtml" />
+        </reference>
+    </routeradmin_adminhtml_index_messages>
+    <routeradmin_adminhtml_index_news>
+        <reference name="content">
+            <block type="octopushsms/news"  name="display_news"
+                   template="octopushsms/news.phtml" />
+        </reference>
+    </routeradmin_adminhtml_index_news>
+    <routeradmin_adminhtml_index_savesettings>
+        <reference name="content">
+            <block type="octopushsms/setting"  name="afficher_setting"
+                   template="octopushsms/afficher.phtml" />
+        </reference>
+    </routeradmin_adminhtml_index_savesettings>
+    <routeradmin_adminhtml_index_campaign>
+        <reference name="content">
+            <block type="octopushsms/campaign_grid"  name="campaign" />
+        </reference>        
+    </routeradmin_adminhtml_index_campaign>
+    <routeradmin_adminhtml_index_history>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>octopushsms/octopushsms.css</stylesheet>
+            </action>
+            <action method="addCss">
+                <stylesheet>octopushsms/grid.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="octopushsms/campaign_grid"  name="campaign" />
+        </reference>        
+    </routeradmin_adminhtml_index_history>
+    <routeradmin_adminhtml_index_edit>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>lib/jquery/jquery-1.10.2.js</name>
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>lib/jquery/noconflict.js</name>
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>octopushsms/octopushsms.js</name>
+            </action>
+            <action method="addCss">
+                <stylesheet>octopushsms/octopushsms.css</stylesheet>
+            </action>
+            <action method="addCss">
+                <stylesheet>octopushsms/grid.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="octopushsms/campaign_edit_info"  name="notice" template="octopushsms/notice.phtml"/>
+            <block type="octopushsms/campaign_edit"  name="campaign" template="octopushsms/campaign.phtml"/>
+            <block type="octopushsms/recipient_grid"  name="recipient_grid"/>
+        </reference>
+    </routeradmin_adminhtml_index_edit>    
+</layout>
+

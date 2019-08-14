@@ -1,0 +1,30 @@
+.octopushsms-autocomplete ul { border:1px solid #5c7989; background-color:#f9f5f0; }
+.octopushsms-autocomplete li { text-align:left; border-bottom:1px solid #f4eee7; padding:2px 8px 1px 8px; cursor:pointer; }
+.octopushsms-autocomplete li.odd { background-color:#fffefb; }
+.octopushsms-autocomplete li.selected { background-color:#f7e8dd; }
+.octopushsms-autocomplete li:hover { background-color:#f7e8dd; }
+
+.text_td {width:25%;vertical-align:top}
+th.text_td{vertical-align: middle}
+.data_td {width:50%}
+.message_textarea {width:90%;}
+.os_row{width: 100%; display: table;}
+table.messages_data{max-width:1024px;width:100%}
+
+#block_infos label {
+	width: 45%;
+}
+#block_infos label + div {
+	padding-top: 3px;
+	float: right;
+	width: 50%;
+}
+#block_infos #balance {
+	font-weight: bold;
+	color: red;
+}
+
+
+
+
+

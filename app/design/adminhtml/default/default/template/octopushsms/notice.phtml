@@ -1,0 +1,21 @@
+<div class="postbox-container">
+    <div id="sendsms_message" class="box">
+        <?php if ($this->getRequest()->getActionName() != 'history') { ?>
+            <p><?php
+                echo __('As soon as you start choosing the recipient(s), your campaign will be automatically saved and you will find it in "Send SMS" tab for further modification if necessary.') . '<br/>' .
+                __('Here is the sending process :') . '<br/>' .
+                __('1. Create your campaign, click on \'Save\' if you want to be able to modify it later.') . '<br/>' .
+                __('2. When your campaign is ready, click "Transmit to Octopush" to send your request to the SMS plateform, SMS will not be send at this time ! Status become "Transfer in progess" and the campaign can\'t be modified anymore.') . '<br/>' .
+                __('3. During the transfer, number of recipients, number of SMS and price are updated in the "Information" part.') . '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+                __('If you stop the transfer by leaving the page (campaign with several recipients), you can complete it.') . '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+                __('When everything has been sent, you can validate the SMS by clicking "Accept & Send" or you can definitively cancel it.') . '<br/>' .
+                __('4. If there\'s no error (insuffisant balance for example), your campaign will be sent. Else, please fix the problem and try again.') . '<br/>' .
+                __('5. You can retrieve all the campaigns whose are not in the status "In Construction", "Transfer in progress" or "Waiting for validation" in the "SMS history" tab.') . '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+                __('You can still cancel it unless it has been sent by Octopush.');
+                ?>
+            </p>
+        <?php } else { ?>
+            <br><br>
+        <?php } ?>
+    </div>
+</div>

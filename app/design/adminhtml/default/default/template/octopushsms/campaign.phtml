@@ -1,0 +1,321 @@
+<?php ?>
+<div id="campaign_id">
+
+    <style type="text/css">
+        #post-body-content, #titlediv, #major-publishing-actions, #minor-publishing-actions, #visibility, #submitdiv { display:none }
+    </style>
+
+    <?php $this->output_button(); ?>
+
+    <form action="<?php echo Mage::getUrl('adminoctopushsms/adminhtml_index/saveCampaign') ?>" method="post" id="sendsms_form" enctype="multipart/form-data">
+        <div><input id="form_key" name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"  /></div>    
+        <input type="hidden" id="action" name="action" value="<?php echo $this->getRequest()->getActionName(); ?>"/>
+        <input type="hidden" id="id_sendsms_campaign" name="id_sendsms_campaign" value="<?php echo $this->campaign->getData('id_sendsms_campaign'); ?>"/>
+        <input type="hidden" id="current_status" value="<?php echo $this->campaign->getData('status') ?>"/>
+        <input type="hidden" id="button_id" name="button_id" value=""/>
+
+        <div id="poststuff">
+            <div class="toastgrid">
+                <div class="toastgrid__col toastgrid__col--3-of-5">
+                    <div class="box">
+                        <h2><span class="dashicons dashicons-admin-settings vmiddle"></span><span><?php echo ($this->campaign->getData('status') == 0 ? __('SMS Settings') : __('SMS Details')) ?></span></h2>
+
+                        <?php
+                        if (!$this->b_auth) {
+                            echo '<span class="failed> ' . __('Before sending a message, you have to enter your account information in the Settings Tab.') . '</span><br/><br/>';
+                        } else {
+                            echo '';
+                        }
+                        ?>
+
+                        <!-- campaign title -->
+                        <p class="form-field form-field-wide">
+                            <label for="sendsms_title"><?php echo __('Title of the campaign') ?></label><br/>
+                            <input type="text" id="title" name="title" maxlength="255" class="required-entry input-text" type="text" value="<?php echo htmlentities($this->campaign->getData('title'), ENT_QUOTES, 'utf-8'); ?>" />
+                        </p>           
+
+
+                        <!-- campaign message-->
+                        <p class="form-field form-field-wide">
+                            <label for="message"><?php echo __('Message') ?></label><br/>
+                            <textarea class="required-entry"
+                            <?php echo ($this->campaign->getData('status') == 0 ? '' : 'readonly') ?>
+                                      rows="5" cols="50" name="message"><?php echo htmlentities($this->campaign->getData('message'), ENT_QUOTES, 'utf-8'); ?></textarea>                                
+                            <br/><?php echo __('Variables you can use : {firstname}, {lastname}'); ?>
+                        </p>
+
+                        <!-- campaign date -->
+                        <!-- TODO non editable en fonction du statut $this->campaign->getData('status') < 2 -->
+                        <p class="form-field form-field-wide"><label for="sendsms_date"><?php echo __('Send date') ?></label><br/>
+                            <input name="date_send" id="date_send" value="<?php echo $this->campaign->getData('date_send'); ?>" class="required-entry input-text" style="width:110px !important;" type="text"> 
+                            <img src="<?php echo Mage::getDesign()->getSkinUrl('/images/grid-cal.gif'); ?>" alt="" class="v-middle" id="date_send_trig" title="Select Date" style="">
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                Calendar.setup({
+                                    inputField: "date_send",
+                                    ifFormat: "%Y-%m-%d %H:%M:%S",
+                                    showsTime: true,
+                                    button: "date_send_trig",
+                                    align: "Bl",
+                                    singleClick: true
+                                });
+                                //]]>
+                            </script>
+                        </p>
+                    </div>
+                </div>
+                <div class="toastgrid__col toastgrid__col--2-of-5">
+                    <?php $this->output_campaign_details(); ?>
+                </div>
+            </div>
+        </div>
+
+        <?php
+//choose_recipient
+        if ($this->campaign->getData('status') == 0) {
+            ?>
+            <div class="poststuff">
+                <div id="sendsms_choose_recipient" class="box">
+                    <h2><span class="dashicons dashicons-search vmiddle"></span><?php echo __('Choose recipients') ?></h2>
+                    <div><h3><span class="dashicons dashicons-info vmiddle"></span><?php echo __('4 methods to choose your recipients') ?></h3></div>
+
+
+                    <table class="form-table">
+
+                        <tbody>
+                            <tr valign="top">
+                                <th scope="row" class="titledesc">
+                                    <label for="sendsms_recipient"><span class="dashicons dashicons-arrow-right"></span><?php echo __('Enter your recipient details') ?></label>
+                                </th>
+                                <td class="forminp">
+                                    <div class="toastgrid">
+                                        <div class="toastgrid__col toastgrid__col--3-of-10">
+                                            <input placeholder="<?php echo __('Phone (international e.g: +33612345678)') ?>" type="text" size="30" maxlength="16" name="sendsms_phone" id="sendsms_phone" />
+                                        </div>
+                                        <div class="toastgrid__col toastgrid__col--3-of-10">
+                                            <input placeholder="<?php echo __('Firstname (optional)') ?>" type="text" size="30" maxlength="32" name="sendsms_firstname" id="sendsms_firstname" />
+                                        </div>
+                                        <div class="toastgrid__col toastgrid__col--3-of-10">
+                                            <input placeholder="<?php echo __('Lastname (optional)') ?>" type="text" size="30" maxlength="32" name="sendsms_lastname" id="sendsms_lastname" />
+                                        </div>
+                                        <div class="toastgrid__col toastgrid__col--1-of-10">
+                                            <span id="add_recipient"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/add_btn_icon.gif'); ?>"/></span>
+                                        </div>                                    
+                                    </div>                                    
+                                </td>
+                            </tr>
+
+                            <tr valign="top">
+                                <th scope="row" class="titledesc">
+                                    <label for="sendsms_customer"><span class="dashicons dashicons-arrow-right"></span><?php echo __('Or search for customers') ?></label>
+                                </th>
+                                <td class="forminp forminp-select">
+                                    <div>
+                                        <input type="text" size="30" id="sendsms_customer_filter" name="q" value="" /> <?php echo __('Search will be applied on phone, id_customer, firstname, lastname') ?>
+                                        <div id="search_customer_autocomplete" class="octopushsms-autocomplete" ></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                                                       <!-- <form id="search_customer_form" action="<?php echo Mage::helper("adminhtml")->getUrl('adminoctopushsms/adminhtml_index/ajaxFilterCustomer/') ?>" method="get">-->
+                        <div class="form-search">
+                            <button type="submit" style="display:none" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                var searchForm = new Octopushsms.searchForm('sendsms_form', 'sendsms_customer_filter', '<?php echo $this->__('Search') ?>');
+                                searchForm.initAutocomplete('<?php echo Mage::helper("adminhtml")->getUrl('adminoctopushsms/adminhtml_index/ajaxFilterCustomer/') ?>', 'search_customer_autocomplete');
+                                //]]>
+                            </script>
+                        </div>
+                        <!--</form>-->
+
+                        <tr valign="top" class="">
+                            <th scope="row" class="titledesc"><span class="dashicons dashicons-arrow-right"></span><?php echo __('Or upload a CSV file') ?></th>
+                            <td class="forminp forminp-checkbox" >
+                                <input id="sendsms_csv" type="file" name="sendsms_csv" />
+                                <span class="plus" id="add_csv"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/add_btn_icon.gif'); ?>"/></span>
+                                <br/>
+                                <?php echo __('Phone in 1st column (international format), Firstname in 2nd (optional), Lastname in 3rd (optional)') ?> 
+                                <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'octopushsms/' ?>example.csv"><?php echo __('See example') ?></a>
+                            </td>
+                        </tr>
+                        <tr valign="top" >
+                            <th scope="row" class="titledesc">
+                                <label for="woocommerce_demo_store_notice"><span class="dashicons dashicons-arrow-right"></span><?php echo __('Or create your own Query') ?></label>
+                            </th>
+                            <td class="forminp forminp-text" id="sendsms_query">
+                                <div>
+                                    <div style="display:block;float:left">
+                                        <!-- choose a country -->
+                                        <?php $_countries = Mage::getResourceModel('directory/country_collection')->loadByStore()->toOptionArray(false)
+                                        ?>
+                                        <?php if (count($_countries) > 0): ?>
+                                            <select name="sendsms_query_country" id="sendsms_query_country" class="">
+                                                <option value="*"><?php echo __('-- All countries --'); ?></option>
+                                                <?php foreach ($_countries as $_country): ?>                                                    
+                                                    <option value="<?php echo $_country['value'] ?>">
+                                                        <?php echo $_country['label'] ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        <?php endif; ?>
+
+                                        <select name="sendsms_query_shop">
+                                            <option value="*"><?php echo $this->__('-- All stores --') ?></option>
+                                            <?php
+                                            $allStores = Mage::app()->getStores();
+                                            foreach ($allStores as $store) {
+                                                echo '<option value="' . $store->getData('entity_id') . '">' . $store->getName() . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <select name="sendsms_query_group">
+                                            <option value="*"><?php echo $this->__('-- All groups --') ?></option>
+                                            <?php
+                                            $groups = Mage::getResourceModel('customer/group_collection')
+                                                    ->addFieldToFilter('customer_group_id', array('gt' => 0))
+                                                    ->load();
+                                            foreach ($groups as $group) {
+                                                echo '<option value="' . $group->getId() . '">' . $group->getCode() . '</option>';
+                                            }
+                                            ?>
+                                        </select>                                        
+                                        <select name="sendsms_query_newsletter">
+                                            <option value=""><?php echo $this->__('-- Newsletter --') ?></option>
+                                            <option value="1"><?php echo $this->__('Yes') ?></option>
+                                            <option value="0"><?php echo $this->__('No') ?></option>
+                                        </select>
+
+                                        <br />
+                                        <span class="filter_label"><?php echo __('Registered') ?></span> <?php echo __('From') ?> <input type="text" class="datepicker" id="sendsms_query_registered_from" name="sendsms_query_registered_from" size="10" maxlength="10" />
+                                        <?php echo __('To') ?> <input type="text" class="datepicker" id="sendsms_query_registered_to" name="sendsms_query_registered_to" size="10" maxlength="10" />
+                                        <span class="filter_label"><?php echo __('Ignore years') ?></span> <input type="checkbox" name="sendsms_query_registered_years" value="1" /><br>
+
+                                        <script type="text/javascript">
+                                            //<![CDATA[
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_registered_from",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_registered_from",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_registered_to",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_registered_to",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            //]]>
+                                        </script>
+
+                                        <span class="filter_label"><?php echo __('Connected') ?></span> <?php echo __('From') ?> <input type="text" class="datepicker" id="sendsms_query_connected_from" name="sendsms_query_connected_from" size="10" maxlength="10" />
+                                        <?php echo __('To') ?> <input type="text" class="datepicker" id="sendsms_query_connected_to" name="sendsms_query_connected_to" size="10" maxlength="10" />
+                                        <span class="filter_label"><?php echo __('Ignore years') ?></span> <input type="checkbox" name="sendsms_query_connected_years" value="1" /><br>
+                                        <script type="text/javascript">
+                                            //<![CDATA[
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_connected_from",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_connected_from",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_connected_to",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_connected_to",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            //]]>
+                                        </script>
+
+                                        <span class="filter_label"><?php echo __('Birthday') ?></span> <?php echo __('From') ?> <input type="text" class="datepicker" id="sendsms_query_birthday_from" name="sendsms_query_birthday_from" size="10" maxlength="10" />
+                                        <?php echo __('To') ?> <input type="text" class="datepicker" id="sendsms_query_birthday_to" name="sendsms_query_birthday_to" size="10" maxlength="10" />
+                                        <span class="filter_label"><?php echo __('Ignore years') ?></span> <input type="checkbox" name="sendsms_query_birthday_years" value="1" /><br>
+                                        <script type="text/javascript">
+                                            //<![CDATA[
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_birthday_from",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_birthday_from",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            Calendar.setup({
+                                                inputField: "sendsms_query_birthday_to",
+                                                ifFormat: "%Y-%m-%d",
+                                                showsTime: false,
+                                                button: "sendsms_query_birthday_to",
+                                                align: "Bl",
+                                                singleClick: true
+                                            });
+                                            //]]>
+                                        </script>
+                                        <!-- -->
+
+                                        <span class="filter_label"><?php echo __('Number of orders') ?></span> <?php echo __('From') ?> <input type="text" id="sendsms_query_orders_from" id="sendsms_query_orders_from" name="sendsms_query_orders_from" size="10" maxlength="10" />
+                                        <?php echo __('To') ?> <input type="text" id="sendsms_query_orders_to" name="sendsms_query_orders_to" size="10" maxlength="10" />
+                                        <span class="filter_label"><?php echo __('Or no order') ?></span> <input type="checkbox" id="sendsms_query_orders_none" id="sendsms_query_orders_none" name="sendsms_query_orders_none" value="1" />
+                                    </div>
+                                    <div style="display:block;float:left">
+                                        <span id="sendsms_query_result"></span> <?php echo __('customer(s) found') ?> <span id="sendsms_query_add" title="<?php echo __('Add') ?>"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/add_btn_icon.gif'); ?>"/></span> 
+                                    </div>
+                                </div>
+                            </td>
+
+
+                        </tr>							                                    
+                        </tbody>
+                    </table>
+                    <?php if ($this->campaign->getData('status') == 0) { ?>
+                        <div style="line-height:30px"><span class="dashicons dashicons-info"></span> <?php echo __('All doublons will be automatically removed') ?></div>
+                    <?php } ?>
+
+                </div>
+            </div>
+        <?php } ?>
+
+        <?php
+        $jsScript = '';
+
+        if ($this->campaign->getData('status') == 0) {
+            $jsScript .= '
+                        var sendsms_msg_delRecipient = "' . __('Deleting recipient.') . '";
+                        var sendsms_error_phone_invalid = "' . __('That phone number is invalid.') . '";
+                        var sendsms_error_csv = "' . __('Please choose a valid CSV file') . '";
+                        var sendsms_error_orders = "' . __('That number must be greater or equal to 1') . '";
+                        var sendsms_confirm_cancel = "' . __('Are you sure you want to cancel that campaign ?') . '";
+                        var sendsms_confirm_delete = "' . __('Are you sure you want to delete that campaign ?') . '";';
+        }
+        $jsScript .= '
+            var campaignForm = new varienForm("sendsms_form");
+            //var searchForm = new Varien.searchForm("search_customer_form", "sendsms_customer_filter", "Search entire store here...");
+            //searchForm.initAutocomplete(\'' . Mage::helper("adminhtml")->getUrl('adminoctopushsms/adminhtml_index/ajaxFilterCustomer/') . '\', \'search_autocomplete\');
+            $j(document).ready(function() {                
+                var ajaxurl = "' . Mage::getUrl('adminoctopushsms/adminhtml_index/') . '";
+                initTab(ajaxurl);
+                initButtons(true); ';
+
+
+//transmit to ocopush via ajax if it is necessary
+        if ($this->getRequest()->getActionName() == 'edit' && $this->campaign->getData('status') == 1 && !sizeof($this->campaign->getErrors())) {
+            $jsScript .= 'Octopushsms.showWaiting("' . __('Transfer in progress : ') . $this->campaign->getData('nb_recipients') . ' ' . __('recipients left') . '");';
+            $jsScript .= 'transmitToOWS();';
+        }
+        $jsScript .= '});';
+
+        echo '<script type="text/javascript">' . $jsScript . '</script>';
+        echo "<br/>";
+        ?>
+    </form>
+
+

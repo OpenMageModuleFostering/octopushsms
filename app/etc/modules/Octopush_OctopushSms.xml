@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <!-- the same block we have in module's config.xml -->
+    <modules>
+        <!-- This node's name has to be the same as module's full name
+        including namespace -->
+        <Octopush_OctopushSms>
+            <!-- flag indicating weather module is active or not -->
+            <active>true</active>
+            <!-- code pool -->
+            <codePool>local</codePool>
+        </Octopush_OctopushSms>
+    </modules>
+</config>

@@ -1,0 +1,8 @@
+/home/mathieu/projets/mag/app/design/adminhtml/default/default/template/octopushsms/chooseRecipient.phtml:            <h2><span class="dashicons dashicons-search vmiddle"></span><?php echo __('Choose the recipients') ?></h2>
+/home/mathieu/projets/mag/app/design/adminhtml/default/default/template/octopushsms/campaign.phtml:                    <h2><span class="dashicons dashicons-search vmiddle"></span><?php echo __('Choose the recipients') ?></h2>
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms.csv:"Choose the recipients","Choose the recipients"
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms.csv:"Choose the recipients","Choose the recipients"
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms_1.csv:"Choose the recipients",
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms_1.csv:"Choose the recipients",
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms_2.csv:"Choose the recipients","Choose the recipients"
+/home/mathieu/projets/mag/app/locale/fr_FR/Octopush_OctopushSms_2.csv:"Choose the recipients","Choose the recipients"

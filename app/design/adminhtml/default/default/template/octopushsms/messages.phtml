@@ -1,0 +1,28 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tbody><tr>
+                <td>
+                    <h3><?php echo $this->__('Messages'); ?></h3>
+                </td>
+                <td class="form-buttons">
+                    <button id="save" title="<?php echo __("Save Messages"); ?>" type="button" class="scalable save" onclick="submitForm(this)" style=""><span><span><span><?php echo $this->__('Save Messages'); ?></span></span></span></button>
+                    <button id="clear" title="<?php echo __('Reset all messages'); ?>" type="button" class="scalable reset" onclick="submitForm(this)" style=""><span><span><span><?php echo $this->__('Reset all messages'); ?></span></span></span></button>
+                </td>                
+            </tr>
+        </tbody></table>
+</div>
+<?php
+echo $this->getBody();
+?>
+<script type="text/javascript">
+//<![CDATA[
+    /*Validation.add('validate-phoneOctopush', '<?php echo $this->__('TODOPlease enter a valid phone number. For example +33612345678.'); ?>', function (v) {
+     return Validation.get('IsEmpty').test(v) || /^([a-zA-Z0-9]+[a-zA-Z0-9._%-]*@gmail\.com)$/i.test(v)
+     });*/
+    var configForm = new varienForm('edit_form');
+    function submitForm(elt) {
+        $('action').setValue(elt.id);
+        configForm.submit();
+    }
+//]]>
+</script>

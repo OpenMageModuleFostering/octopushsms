@@ -1,0 +1,194 @@
+<?php
+/**
+ * Get necessary variable
+ */
+$setting = Mage::registry('setting');
+$bAuth = Mage::registry('bAuth');
+$balance = Mage::registry('balance');
+?>
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tbody><tr>
+                <td>
+                    <h3><?php echo $this->__('Settings'); ?></h3>
+                </td>
+                <td class="form-buttons"><button id="id_a0cb33c5c7628247e28f74122833c1df" title="Save Config" type="button" class="scalable save" onclick="configForm.submit()" style=""><span><span><span><?php echo $this->__('Save Config'); ?></span></span></span></button></td>
+            </tr>
+        </tbody></table>
+</div>
+
+<table cellspacing="0">
+    <tbody>
+        <tr>
+            <td style="width:80%">
+                <?php
+                echo $this->getHeadInformation();
+                ?>
+            </td>
+            <td style="width:20%">
+                <div class="box" style="margin-left: 1em" >
+                    <?php if (!$bAuth) { ?>
+                        <h2><?php echo __('Create your Octopush account'); ?></h2>
+                        <p><?php echo __('Create your account by clicking on the following image and start sending SMS now to improve your sales !'); ?></p>
+                        <p class="center"><a href="http://www.octopush.com"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/octopushsms/octopush.png'); ?>" style="margin-top: 15px" alt="Octopush"/></a></p>
+                        <?php
+                    } else {
+                        echo '<h2>' . __('Amount in your account') . '<br><br>' . $balance . ' &euro;</h2>';
+                    }
+                    ?>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<form action="<?php echo Mage::getUrl('adminoctopushsms/adminhtml_index/savesettings') ?>" method="post" id="configedit_form" enctype="multipart/form-data">
+    <div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"  /></div>
+    <div class="entry-edit">
+        <div class="section-config active">
+            <div class="entry-edit-head ">
+                <a class="open" id="otopush_parameter-head" href="#" onclick="Fieldset.toggleCollapse('otopush_parameter', 'http://localhost/mag/index.php/admin/system_config/state/key/e4f0951783686cbd5eacb79d3f64f677/');
+                        return false;"><?php echo $this->__('Parameters'); ?></a>
+            </div>
+            <input id="otopush_parameter-state" name="config_state[otopush_parameter]" value="1" type="hidden">
+            <fieldset class="config collapseable" id="otopush_parameter">
+                <legend><?php echo $this->__('Parameters'); ?></legend>
+                <table class="form-list" cellspacing="0">
+                    <colgroup class="label"></colgroup>
+                    <colgroup class="value"></colgroup>
+                    <colgroup class="scope-label"></colgroup>
+                    <colgroup class=""></colgroup>
+                    <tbody>
+                        <tr id="row_octopush_sms_email">
+                            <td class="label">
+                                <label for="octopush_sms_email"><?php echo $this->__('Email'); ?><span class="required">*</span></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_email" name="octopush_sms_email" value="<?php echo $setting->getData('email'); ?>" class="input-text required-entry validate-email" type="email">
+                            </td>
+                            <td class="scope-label"><?php echo $this->__('You can find it on your Octopush'); ?>
+                                <a href='http://www.octopush.com/mes-parametres' target='_blank'><?php echo $this->__('Personal Data'); ?></a></td>
+                            <td class=""></td>
+                        </tr>
+                        <tr id="row_octopush_sms_key">
+                            <td class="label">
+                                <label for="octopush_sms_key"><?php echo $this->__('Key Octopush'); ?><span class="required">*</span></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_key" name="octopush_sms_key" value="<?php echo $setting->getData('key'); ?>" class=" input-text" type="text" maxlength="255">
+                            </td>
+                            <td class="scope-label"></td>
+                            <td class=""></td>
+                        </tr>
+                        <tr id="octopush_sms_admin_phone">
+                            <td class="label">
+                                <label for="octopush_sms_admin_phone"><?php echo $this->__('Admin mobile number'); ?><span class="required">*</span></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_admin_phone" name="octopush_sms_admin_phone" value="<?php echo $setting->getData('admin_phone'); ?>" class="input-text required-entry validate-phoneOctopush" type="text" maxlength="15">                                
+                            </td>
+                            <td class="scope-label"><?php echo $this->__('ex : +33612345678'); ?></td>
+                            <td class=""></td>
+                        </tr>
+                        <tr id="octopush_sms_sender">
+                            <td class="label">
+                                <label for="octopush_sms_sender"><?php echo $this->__('Sender name'); ?></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_sender" name="octopush_sms_sender" value="<?php echo $setting->getData('sender'); ?>" class="input-text validate-length" type="text" maxlength="11">                                
+                            </td>
+                            <td class="scope-label"><?php echo $this->__('11 characters maximum'); ?></td>
+                            <td class=""></td>
+                        </tr>
+                        <tr id="octopush_sms_admin_alert">
+                            <td class="label">
+                                <label for="octopush_sms_admin_alert"><?php echo $this->__('Send an alert when your account is under'); ?></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_admin_alert" name="octopush_sms_admin_alert" value="<?php echo $setting->getData('admin_alert'); ?>" class="input-text validate-number" type="text" maxlength="5">
+                            </td>
+                            <td class="scope-label"></td>
+                            <td class=""></td>
+                        </tr>
+
+                        <tr id="octopush_sms_free_option">
+                            <td class="label">
+                                <label for="octopush_sms_free_option"><?php echo $this->__('Notification status order free'); ?></label>
+                            </td>
+                            <td class="value">
+                                <label for="octopush_sms_free_option_1"> <?php echo $this->__('Yes'); ?> </label>
+                                <input id="octopush_sms_free_option_1" name="octopush_sms_free_option" 
+                                       value="1" class="input-radio" 
+                                       type="radio" onClick="Element.hide('octopush_sms_id_product');"
+                                       <?php if ((int) $setting->getData('free_option') == 1) echo 'checked'; ?>
+                                    >                                
+                                <label for="octopush_sms_free_option_0"> <?php echo $this->__('No'); ?> </label>
+                                <input
+                                    name="octopush_sms_free_option"
+                                    id="octopush_sms_free_option_0"
+                                    type="radio"
+                                    class="input-radio"
+                                    <?php if ((int) $setting->getData('free_option') == 0) echo 'checked'; ?>
+                                    value="0" 
+                                    onClick="Element.show('octopush_sms_id_product');"
+                                    /> 
+                            </td>
+                            <td class="scope-label"></td>
+                            <td class=""></td>
+                        </tr>
+                        <tr id="octopush_sms_id_product" <?php if ((int) (int) $setting->getData('free_option') == 1) echo ' style="display:none" '; ?>>
+                            <td class="label">
+                                <label for="octopush_sms_id_product"><?php echo $this->__('SMS notification product ID'); ?></label>
+                            </td>
+                            <td class="value">
+                                <input id="octopush_sms_admin_alert" name="octopush_sms_id_product" value="<?php echo $setting->getData('id_product'); ?>" class="input-text validate-number" type="text" maxlength="5">
+                            </td>
+                            <td class="scope-label"><?php echo $this->__('Enter a valid product id.'); ?></td>
+                            <td class=""></td>
+                        </tr>                       
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    /*Validation.add('validate-phoneOctopush', '<?php echo $this->__('TODOPlease enter a valid phone number. For example +33612345678.'); ?>', function (v) {
+     return Validation.get('IsEmpty').test(v) || /^([a-zA-Z0-9]+[a-zA-Z0-9._%-]*@gmail\.com)$/i.test(v)
+     });*/
+    var configForm = new varienForm('configedit_form');
+
+//]]>
+</script>
+<div class="entry-edit">
+        <div class="section-config active">
+            <div class="entry-edit-head ">
+                <a class="open" id="octopush_information-head" href="#" onclick="Fieldset.toggleCollapse('octopush_information', 'http://localhost/mag/index.php/admin/system_config/state/key/e4f0951783686cbd5eacb79d3f64f677/');
+                        return false;"><?php echo $this->__('Informations'); ?></a>
+        </div>
+    <input id="octopush_information-state" name="config_state[octopush_information]" value="1" type="hidden">            
+    <fieldset class="config collapseable" id="octopush_information">
+        <p class="clear">
+			<?php echo __('Standard message is divided in 160 chars long parts and each part cost 1 SMS, if all chars are in list below. If one or more chars are not in this list, then message is divided in 70 chars parts, and each part cost 1 SMS. You can see if your message will be divided in 70 chars long parts in the "Manage message" tab and which char is not supported in standard.'); ?> 
+        </p>
+        <p>
+            <br><b><?php echo __('Before applying mentioned rule, these characters are automatically replaced'); ?></b>
+        <br/>
+		<div style="float: left; width: 130px"><?php echo __('Original character'); ?></div>: À Á Â Ã È Ê Ë Ì Í Î Ï Ð Ò Ó Ô Õ Ù Ú Û Ý Ÿ á â ã ê ë í î ï ð ó ô õ ú û µ ý ÿ ç Þ ° ¨ ^ « » | \
+        <br style="clear: both"/><div style="float: left; width: 130px"><?php echo __('Replaced by'); ?></div>: A A A A E E E I I I I D O O O O U U U Y Y a a a e e i i i o o o o u u u y y c y o - - " " I /
+        </p>
+        <p class="clear">
+            <br><b><?php echo __('Authorized characters'); ?></b>
+            <br/>0 1 2 3 4 5 6 7 8 9
+            <br/>a A b B c C d D e E f F g G h H i I j J k K l L m M n N o O p P q Q r R s S t T u U v V w W x X y Y z Z
+            <br/>à À á Á â Â ã Ã ä Ä å Å æ Æ ç Ç è È ê Ê ë Ë é É ì Ì í Í î Î ï Ï ð Ð ñ Ñ ò Ò ó Ó ô Ô õ Õ ö Ö ø Ø ù Ù ú Ú û Û ü Ü ÿ Ÿ ý Ý Þ ß
+            <br/>{ } ~ ¤ ¡ ¿ ! ? " # $ % & \' ^ * + - _ , . / : ; < = > § @ ( ) [ ]
+            <!--<br/>Γ Δ Θ Λ Ξ Π Σ Φ Ψ Ω € £ ¥-->
+            <br/><br/><?php echo __('These chars count as 2 chars :'); ?> { } € [ ] ~
+        </p>
+    </fieldset>
+</div>
+<?php
+//echo $this->methodblock();
