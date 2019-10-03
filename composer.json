@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/OctopushSms",
+    "name": "OpenMageModuleFostering\/OctopushSms",
     "type": "magento-module",
     "license": "GPL-3.0",
     "homepage": "",
     "description": "Octopush SMS allows you to send SMS push notification for specific events: - new account - new order - delievery notification - returned order - out of order notification .... This extension is free. For more information: www.octopush.com",
     "authors": [
-    {
-        "name": "Carl",
-        "email": "jeancarl@octopush.com"
-    }
-],
+        {
+            "name": "Carl",
+            "email": "jeancarl@octopush.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
